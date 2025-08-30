@@ -1,0 +1,711 @@
+{
+	"info": {
+		"_postman_id": "life-wish-list-api",
+		"name": "Life Wish List API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"description": "人生愿望清单系统API测试集合"
+	},
+	"item": [
+		{
+			"name": "认证接口",
+			"item": [
+				{
+					"name": "用户注册",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"testuser\",\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						},
+						"description": "注册新用户"
+					},
+					"response": []
+				},
+				{
+					"name": "用户登录",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"testuser\",\n  \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						},
+						"description": "用户登录获取JWT Token"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "愿望桶接口",
+			"item": [
+				{
+					"name": "创建愿望桶",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"我的旅行计划\",\n  \"description\": \"记录我想去的地方\",\n  \"isPublic\": false\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/buckets",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"buckets"
+							]
+						},
+						"description": "创建一个新的愿望桶"
+					},
+					"response": []
+				},
+				{
+					"name": "获取用户的所有愿望桶",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/buckets",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"buckets"
+							]
+						},
+						"description": "获取当前用户的所有愿望桶"
+					},
+					"response": []
+				},
+				{
+					"name": "获取特定愿望桶",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/buckets/:bucketId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"buckets",
+								":bucketId"
+							],
+							"variable": [
+								{
+									"key": "bucketId",
+									"value": "1"
+								}
+							]
+						},
+						"description": "获取特定ID的愿望桶"
+					},
+					"response": []
+				},
+				{
+					"name": "更新愿望桶",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"我的更新后的旅行计划\",\n  \"description\": \"记录我想去的地方和计划\",\n  \"isPublic\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/buckets/:bucketId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"buckets",
+								":bucketId"
+							],
+							"variable": [
+								{
+									"key": "bucketId",
+									"value": "1"
+								}
+							]
+						},
+						"description": "更新特定ID的愿望桶"
+					},
+					"response": []
+				},
+				{
+					"name": "删除愿望桶",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/buckets/:bucketId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"buckets",
+								":bucketId"
+							],
+							"variable": [
+								{
+									"key": "bucketId",
+									"value": "1"
+								}
+							]
+						},
+						"description": "删除特定ID的愿望桶"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "愿望接口",
+			"item": [
+				{
+					"name": "在愿望桶中创建愿望",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"去日本旅行\",\n  \"description\": \"体验日本的文化和美食\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/buckets/:bucketId/wishes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"buckets",
+								":bucketId",
+								"wishes"
+							],
+							"variable": [
+								{
+									"key": "bucketId",
+									"value": "1"
+								}
+							]
+						},
+						"description": "在指定的愿望桶中创建新愿望"
+					},
+					"response": []
+				},
+				{
+					"name": "获取愿望桶中的所有愿望",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/buckets/:bucketId/wishes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"buckets",
+								":bucketId",
+								"wishes"
+							],
+							"variable": [
+								{
+									"key": "bucketId",
+									"value": "1"
+								}
+							]
+						},
+						"description": "获取指定愿望桶中的所有愿望"
+					},
+					"response": []
+				},
+				{
+					"name": "获取特定愿望",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/buckets/:bucketId/wishes/:wishId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"buckets",
+								":bucketId",
+								"wishes",
+								":wishId"
+							],
+							"variable": [
+								{
+									"key": "bucketId",
+									"value": "1"
+								},
+								{
+									"key": "wishId",
+									"value": "1"
+								}
+							]
+						},
+						"description": "获取特定的愿望"
+					},
+					"response": []
+				},
+				{
+					"name": "更新愿望",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"去日本和韩国旅行\",\n  \"description\": \"体验日本和韩国的文化和美食\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/buckets/:bucketId/wishes/:wishId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"buckets",
+								":bucketId",
+								"wishes",
+								":wishId"
+							],
+							"variable": [
+								{
+									"key": "bucketId",
+									"value": "1"
+								},
+								{
+									"key": "wishId",
+									"value": "1"
+								}
+							]
+						},
+						"description": "更新特定的愿望"
+					},
+					"response": []
+				},
+				{
+					"name": "标记愿望为完成",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/buckets/:bucketId/wishes/:wishId/complete",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"buckets",
+								":bucketId",
+								"wishes",
+								":wishId",
+								"complete"
+							],
+							"variable": [
+								{
+									"key": "bucketId",
+									"value": "1"
+								},
+								{
+									"key": "wishId",
+									"value": "1"
+								}
+							]
+						},
+						"description": "将特定愿望标记为已完成"
+					},
+					"response": []
+				},
+				{
+					"name": "删除愿望",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/buckets/:bucketId/wishes/:wishId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"buckets",
+								":bucketId",
+								"wishes",
+								":wishId"
+							],
+							"variable": [
+								{
+									"key": "bucketId",
+									"value": "1"
+								},
+								{
+									"key": "wishId",
+									"value": "1"
+								}
+							]
+						},
+						"description": "删除特定的愿望"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "愿望日志接口",
+			"item": [
+				{
+					"name": "为愿望创建日志",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"content\": \"今天开始计划我的日本之旅\",\n  \"imageUrls\": [\n    \"http://example.com/image1.jpg\"\n  ],\n  \"loggedAt\": \"2025-08-24T10:00:00\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/wishes/:wishId/logs",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"wishes",
+								":wishId",
+								"logs"
+							],
+							"variable": [
+								{
+									"key": "wishId",
+									"value": "1"
+								}
+							]
+						},
+						"description": "为指定的愿望创建日志"
+					},
+					"response": []
+				},
+				{
+					"name": "获取愿望的所有日志",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/wishes/:wishId/logs",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"wishes",
+								":wishId",
+								"logs"
+							],
+							"variable": [
+								{
+									"key": "wishId",
+									"value": "1"
+								}
+							]
+						},
+						"description": "获取指定愿望的所有日志"
+					},
+					"response": []
+				},
+				{
+					"name": "获取特定日志",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/wishes/:wishId/logs/:logId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"wishes",
+								":wishId",
+								"logs",
+								":logId"
+							],
+							"variable": [
+								{
+									"key": "wishId",
+									"value": "1"
+								},
+								{
+									"key": "logId",
+									"value": "1"
+								}
+							]
+						},
+						"description": "获取特定的日志"
+					},
+					"response": []
+				},
+				{
+					"name": "更新日志",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"content\": \"今天开始计划我的日本和韩国之旅，已经收集了一些资料\",\n  \"imageUrls\": [\n    \"http://example.com/image1.jpg\",\n    \"http://example.com/image2.jpg\"\n  ],\n  \"loggedAt\": \"2025-08-24T15:00:00\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/wishes/:wishId/logs/:logId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"wishes",
+								":wishId",
+								"logs",
+								":logId"
+							],
+							"variable": [
+								{
+									"key": "wishId",
+									"value": "1"
+								},
+								{
+									"key": "logId",
+									"value": "1"
+								}
+							]
+						},
+						"description": "更新特定的日志"
+					},
+					"response": []
+				},
+				{
+					"name": "删除日志",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/wishes/:wishId/logs/:logId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"wishes",
+								":wishId",
+								"logs",
+								":logId"
+							],
+							"variable": [
+								{
+									"key": "wishId",
+									"value": "1"
+								},
+								{
+									"key": "logId",
+									"value": "1"
+								}
+							]
+						},
+						"description": "删除特定的日志"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080"
+		},
+		{
+			"key": "auth_token",
+			"value": ""
+		}
+	]
+}
