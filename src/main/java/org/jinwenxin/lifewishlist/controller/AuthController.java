@@ -2,6 +2,7 @@ package org.jinwenxin.lifewishlist.controller;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.jinwenxin.lifewishlist.dto.request.LoginRequest;
 import org.jinwenxin.lifewishlist.dto.request.RegisterRequest;
+import org.jinwenxin.lifewishlist.dto.request.UserProfileUpdateRequest;
 import org.jinwenxin.lifewishlist.dto.response.AuthResponse;
 import org.jinwenxin.lifewishlist.dto.response.UserProfileResponse;
 import org.jinwenxin.lifewishlist.model.User;
@@ -103,6 +104,58 @@ public class AuthController {
             return ResponseEntity.ok(userProfile);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Failed to get user information");
+        }
+    }
+    
+    @PutMapping("/profile")
+    public ResponseEntity<?> updateUserProfile(@Valid @RequestBody UserProfileUpdateRequest profileUpdateRequest, 
+                                               Authentication authentication) {
+        try {
+            // 获取当前认证用户
+            String currentUsername = authentication.getName();
+            
+            // 查找当前用户
+            Optional<User> currentUserOptional = userService.getUserByUsername(currentUsername);
+            if (currentUserOptional.isEmpty()) {
+                return ResponseEntity.badRequest().body("User not found");
+            }
+            
+            User currentUser = currentUserOptional.get();
+            
+            // 检查是否有权限更新该用户资料（用户只能更新自己的资料）
+            if (!currentUser.getId().equals(profileUpdateRequest.getId())) {
+                return ResponseEntity.badRequest().body("You can only update your own profile");
+            }
+            
+            // 检查用户名是否被其他用户使用
+            Optional<User> userWithSameUsername = userService.getUserByUsername(profileUpdateRequest.getUsername());
+            if (userWithSameUsername.isPresent() && !userWithSameUsername.get().getId().equals(currentUser.getId())) {
+                return ResponseEntity.badRequest().body("Username is already taken!");
+            }
+            
+            // 检查邮箱是否被其他用户使用
+            Optional<User> userWithSameEmail = userService.getUserByEmail(profileUpdateRequest.getEmail());
+            if (userWithSameEmail.isPresent() && !userWithSameEmail.get().getId().equals(currentUser.getId())) {
+                return ResponseEntity.badRequest().body("Email is already in use!");
+            }
+            
+            // 更新用户信息
+            currentUser.setUsername(profileUpdateRequest.getUsername());
+            currentUser.setEmail(profileUpdateRequest.getEmail());
+            currentUser.setAvatarUrl(profileUpdateRequest.getAvatarUrl());
+            
+            User updatedUser = userService.updateUser(currentUser);
+            
+            UserProfileResponse userProfile = new UserProfileResponse(
+                    updatedUser.getId(),
+                    updatedUser.getUsername(),
+                    updatedUser.getEmail(),
+                    updatedUser.getAvatarUrl()
+            );
+            
+            return ResponseEntity.ok(userProfile);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Failed to update user profile: " + e.getMessage());
         }
     }
 }
